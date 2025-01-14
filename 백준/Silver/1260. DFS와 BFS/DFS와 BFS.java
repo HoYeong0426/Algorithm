@@ -1,33 +1,39 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class Main {
 
-    static int[][] treeArray;
+    static int[][] arr;
     static boolean[] visited;
-    
+
     public static void main(String[] args) throws IOException {
 
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = sc.nextInt();   
-        int M = sc.nextInt();   
-        int V = sc.nextInt();   
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
 
-        treeArray = new int[N+1][N+1];
 
-        for(int i = 0; i < M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+        arr = new int[N+1][N+1];
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
 
-            treeArray[a][b] = 1;
-            treeArray[b][a] = 1;
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            arr[a][b] = 1;
+            arr[b][a] = 1;
         }
 
-        visited = new boolean[N + 1];
+        visited = new boolean[N+1];
+
         dfs(V);
 
         System.out.println();
@@ -37,25 +43,26 @@ public class Main {
         bfs(V);
 
         System.out.println();
+
+        
     }
 
-    private static void dfs(int v) {
+    public static void dfs(int v) {
         visited[v] = true;
         System.out.print(v + " ");
 
-        if(v == treeArray.length) return;
+        if (v == arr.length) return;
 
-        for(int j = 1; j < treeArray.length; j++) {
-            if(treeArray[v][j] == 1 && visited[j] == false) {
-                dfs(j);
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[v][i] == 1 && visited[i] == false) {
+                dfs(i);
             }
         }
+
     }
 
-
-
-    private static void bfs(int v) {
-        Queue<Integer> queue = new LinkedList<Integer>();
+    public static void bfs(int v) {
+        Queue<Integer> queue = new LinkedList<>();
         queue.offer(v);
         visited[v] = true;
 
@@ -64,15 +71,17 @@ public class Main {
         while(!queue.isEmpty()) {
             int n = queue.poll();
 
-			
-            for(int i = 1; i < treeArray.length; i++) {
-                if(treeArray[n][i] == 1 && visited[i] == false) {
+            for (int i = 1; i < arr.length; i++) {
+                if (arr[n][i] == 1 && visited[i] == false) {
                     visited[i] = true;
                     System.out.print(i + " ");
                     queue.offer(i);
                 }
             }
-        }   
+        }
+
     }
+
+
 
 }
