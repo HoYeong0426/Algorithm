@@ -31,19 +31,19 @@ public class Main {
 			arr[b][a] = 1;
 		}
 
-		bfs(1);
+		dfs(1);
 
 		System.out.println(result);
 	}
 
 
-	public static void bfs(int n) {
+	public static void dfs(int n) {
 		visited[n] = true;
 
 		for (int i = 1; i < computer + 1; i++) {
 			if (arr[n][i] == 1 && visited[i] == false) {
-				bfs(i);
 				result++;
+                dfs(i);
 			}
 		}
 
