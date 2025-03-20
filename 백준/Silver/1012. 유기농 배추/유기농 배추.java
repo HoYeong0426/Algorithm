@@ -1,60 +1,81 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static int[][] field;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    static int[][] map;
     static boolean[][] visited;
-    static int[] dx = {0, 0, -1, 1}; // 상하좌우 이동
-    static int[] dy = {-1, 1, 0, 0};
-    static int M, N;
+    static int count;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
+    public static void main(String[] args) throws IOException {
 
-        for (int t = 0; t < T; t++) {
-            M = sc.nextInt();
-            N = sc.nextInt();
-            int K = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int N = Integer.parseInt(br.readLine());
 
-            field = new int[M][N];
-            visited = new boolean[M][N];
+        while (N-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-            for (int i = 0; i < K; i++) {
-                int x = sc.nextInt();
-                int y = sc.nextInt();
-                field[x][y] = 1;
-            }
-
-            int wormCount = 0;
+            map = new int[x][y];
+            visited = new boolean[x][y];
 
             for (int i = 0; i < M; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (field[i][j] == 1 && !visited[i][j]) {
-                        dfs(i, j);
-                        wormCount++;
+                st = new StringTokenizer(br.readLine());
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
+
+                map[a][b] = 1;
+            }
+
+            for (int i = 0; i < x; i++) {
+                for (int j = 0; j < y; j++) {
+                    if (map[i][j] == 1 && !visited[i][j]) {
+                        bfs(i, j);
+                        count++;
                     }
                 }
             }
 
-            System.out.println(wormCount);
+            System.out.println(count);
+            count = 0;
+
         }
 
-        sc.close();
     }
 
-    public static void dfs(int x, int y) {
+
+    static void bfs(int x, int y) {
+        Queue<int[]> queue = new LinkedList<>();
         visited[x][y] = true;
+        queue.offer(new int[] {x, y});
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        while (!queue.isEmpty()) {
+            int[] arr = queue.poll();
+            int nowX = arr[0];
+            int nowY = arr[1];
 
-            if (nx >= 0 && nx < M && ny >= 0 && ny < N) {
-                if (field[nx][ny] == 1 && !visited[nx][ny]) {
-                    dfs(nx, ny);
-                }
+            for (int i = 0; i < 4; i++) {
+                int nextX = nowX + dx[i];
+                int nextY = nowY + dy[i];
+
+                if (nextX < 0 || nextY < 0 || nextX >= map.length || nextY >= map[0].length) continue;
+                if (visited[nextX][nextY] || map[nextX][nextY] == 0) continue;
+
+                queue.offer(new int[] {nextX, nextY});
+                visited[nextX][nextY] = true;
+
             }
+
         }
     }
+
 }
