@@ -13,22 +13,14 @@ public class Main {
         int[][] box = new int[N][M];
 
         Queue<int[]> queue = new LinkedList<>();
-        int emptyCount = 0;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 box[i][j] = sc.nextInt();
                 if (box[i][j] == 1) {
                     queue.add(new int[]{i, j});
-                } else if (box[i][j] == -1) {
-                    emptyCount++;
-                }
+                } 
             }
-        }
-
-        if (queue.size() + emptyCount == N * M) {
-            System.out.println(0);
-            return;
         }
 
         int days = bfs(box, queue, N, M);
