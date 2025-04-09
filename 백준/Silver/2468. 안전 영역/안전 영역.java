@@ -1,64 +1,84 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
+
+    static int[] dx = new int[] {-1, 1, 0 , 0};
+    static int[] dy = new int[] {0, 0, -1, 1};
     static int[][] map;
     static boolean[][] visited;
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1};
-    
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    static int count;
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        int N = Integer.parseInt(br.readLine());
+
         map = new int[N][N];
         
-        int minHeight = 100, maxHeight = 1;
+        int minHeight = Integer.MAX_VALUE;
+        int maxHeight = Integer.MIN_VALUE;
+        int result = 0;
+
         for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                map[i][j] = sc.nextInt();
-                minHeight = Math.min(minHeight, map[i][j]);
-                maxHeight = Math.max(maxHeight, map[i][j]);
+                int num = Integer.parseInt(st.nextToken());
+                map[i][j] = num;
+                minHeight = Math.min(minHeight, num);
+                maxHeight = Math.max(maxHeight, num);
             }
         }
-        sc.close();
-        
-        int maxSafeZones = 1;
-        for (int h = minHeight; h <= maxHeight; h++) {
+
+        for (int k = 0; k <= maxHeight; k++) {
             visited = new boolean[N][N];
-            int count = 0;
-            
+            count = 0;
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    if (map[i][j] > h && !visited[i][j]) {
-                        bfs(i, j, h);
+                    if (!visited[i][j] && map[i][j] > k) {
+                        bfs(i, j, k);
                         count++;
                     }
                 }
             }
-            maxSafeZones = Math.max(maxSafeZones, count);
+
+            result = Math.max(result, count);
         }
+
+        System.out.println(result);
+
         
-        System.out.println(maxSafeZones);
     }
-    
+
+
     static void bfs(int x, int y, int height) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{x, y});
+        queue.add(new int[] {x, y});
         visited[x][y] = true;
-        
+
         while (!queue.isEmpty()) {
-            int[] cur = queue.poll();
-            int cx = cur[0], cy = cur[1];
-            
-            for (int d = 0; d < 4; d++) {
-                int nx = cx + dx[d];
-                int ny = cy + dy[d];
-                
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny] && map[nx][ny] > height) {
-                    visited[nx][ny] = true;
-                    queue.offer(new int[]{nx, ny});
-                }
+            int[] arr = queue.poll();
+            int nowX = arr[0];
+            int nowY = arr[1];
+
+            for (int i = 0; i < 4; i++) {
+                int nextX = nowX + dx[i];
+                int nextY = nowY + dy[i];
+    
+                if (nextX < 0 || nextY < 0 || nextX >= map.length || nextY >= map.length) continue;
+                if (visited[nextX][nextY] || map[nextX][nextY] <= height) continue;
+
+                queue.add(new int[] {nextX, nextY});
+                visited[nextX][nextY] = true;
+    
             }
         }
     }
+
+
 }
