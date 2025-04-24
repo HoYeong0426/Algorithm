@@ -7,8 +7,6 @@ class Solution {
         for (int[] puddle : puddles) {
             dp[puddle[1]][puddle[0]] = -1;
         }
-
-        if (dp[1][1] == -1) return 0;
         
         dp[1][1] = 1;
 
