@@ -1,25 +1,31 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
+
     static int N, count;
     static int[] board;
-    
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+
         board = new int[N];
         count = 0;
-        
+
         solve(0);
         System.out.println(count);
+
     }
-    
+
     static void solve(int row) {
         if (row == N) {
             count++;
             return;
         }
-        
+
         for (int col = 0; col < N; col++) {
             if (isSafe(row, col)) {
                 board[row] = col;
@@ -27,9 +33,9 @@ public class Main {
             }
         }
     }
-    
+
     static boolean isSafe(int row, int col) {
-        for (int i = 0; i < row; i++) {
+        for (int i = 0; i < row; i ++) {
             if (board[i] == col || Math.abs(board[i] - col) == row - i) {
                 return false;
             }
