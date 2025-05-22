@@ -5,83 +5,72 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-
 public class Main {
 
-    static int[][] arr;
+    static int[][] map;
     static boolean[] visited;
+    static int N;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int V = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
 
+        map = new int[N + 1][N + 1];
 
-        arr = new int[N+1][N+1];
-        for (int i = 0; i < M; i++) {
+        for (int i = 0 ; i < K; i++) {
             st = new StringTokenizer(br.readLine());
-
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            arr[a][b] = 1;
-            arr[b][a] = 1;
+            map[a][b] = 1;
+            map[b][a] = 1;
         }
 
-        visited = new boolean[N+1];
-
-        dfs(V);
-
+        visited = new boolean[N + 1];
+        dfs(start);
+        
         System.out.println();
 
         visited = new boolean[N + 1];
+        bfs(start);
 
-        bfs(V);
-
-        System.out.println();
-
-        
     }
 
-    public static void dfs(int v) {
-        visited[v] = true;
-        System.out.print(v + " ");
+    static void dfs(int start) {
+        System.out.print(start + " ");
+        visited[start] = true;
 
-        if (v == arr.length) return;
-
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[v][i] == 1 && visited[i] == false) {
-                dfs(i);
-            }
+        for (int i = 0; i < map.length; i++) {
+            if (map[start][i] != 1 || visited[i]) continue;
+            dfs(i);
         }
 
     }
 
-    public static void bfs(int v) {
+    static void bfs(int start) {
         Queue<Integer> queue = new LinkedList<>();
-        queue.offer(v);
-        visited[v] = true;
-
-        System.out.print(v + " ");
+        StringBuilder sb = new StringBuilder();
+        queue.add(start);
+        visited[start] = true;
+        sb.append(start).append(" ");
 
         while(!queue.isEmpty()) {
-            int n = queue.poll();
+            int now = queue.poll();
 
-            for (int i = 1; i < arr.length; i++) {
-                if (arr[n][i] == 1 && visited[i] == false) {
-                    visited[i] = true;
-                    System.out.print(i + " ");
-                    queue.offer(i);
-                }
+            for (int i = 0; i < map.length; i++) {
+                if (map[now][i] != 1 || visited[i]) continue;
+                visited[i] = true;
+                queue.offer(i);
+                sb.append(i).append(" ");
             }
         }
 
+        System.out.println(sb.toString());
     }
-
-
 
 }
