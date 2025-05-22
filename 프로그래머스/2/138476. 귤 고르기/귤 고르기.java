@@ -10,7 +10,7 @@ class Solution {
         }
         
         List<Integer> list = new ArrayList<>(map.values());
-        list.sort(Comparator.reverseOrder());
+        Collections.sort(list, Collections.reverseOrder());
         
         for (int num : list) {
             k -= num;
@@ -21,3 +21,4 @@ class Solution {
         return answer;
     }
 }
+
