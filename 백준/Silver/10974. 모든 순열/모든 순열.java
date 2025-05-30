@@ -1,21 +1,27 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-public class Main {
+class Main {
+
     static int N;
     static boolean[] visited;
     static int[] result;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine());
         visited = new boolean[N + 1];
         result = new int[N];
 
         dfs(0);
     }
 
-    static void dfs(int depth) {
-        if (depth == N) {
+    static void dfs(int count) {
+
+        if (count == N) {
             for (int i = 0; i < N; i++) {
                 System.out.print(result[i] + " ");
             }
@@ -24,12 +30,13 @@ public class Main {
         }
 
         for (int i = 1; i <= N; i++) {
-            if (!visited[i]) {
+            if(!visited[i]) {
                 visited[i] = true;
-                result[depth] = i;
-                dfs(depth + 1);
+                result[count] = i;
+                dfs(count + 1);
                 visited[i] = false;
             }
         }
+
     }
 }
