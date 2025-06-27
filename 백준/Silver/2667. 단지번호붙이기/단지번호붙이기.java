@@ -4,25 +4,25 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-public class Main {
+class Main {
 
-    static int[] dx = {1, -1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
+    static int N;
     static int[][] map;
     static boolean[][] visited;
-    static int count;
-    static ArrayList<Integer> result = new ArrayList<>();
+    static int[] dx = new int[] {-1, 1, 0, 0};
+    static int[] dy = new int[] {0, 0, -1, 1};
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int N = Integer.parseInt(br.readLine());
-
+        
+        N = Integer.parseInt(br.readLine());
         map = new int[N][N];
         visited = new boolean[N][N];
+        List<Integer> list = new ArrayList<>();
 
         for (int i = 0; i < N; i++) {
             String str = br.readLine();
@@ -33,49 +33,50 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-
-                if (map[i][j] == 1 && !visited[i][j]) {
-                    bfs(i, j);
-                    count++;
+                if (!visited[i][j] && map[i][j] == 1) {
+                    list.add(bfs(i, j));
                 }
-                
             }
         }
 
-        System.out.println(count);
-        Collections.sort(result);
-        for (Integer num : result) {
-            System.out.println(num);
+        Collections.sort(list);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(list.size()).append("\n");
+
+        for (int num : list) {
+            sb.append(num).append("\n");
         }
+
+        System.out.println(sb.toString());
+
     }
 
-
-    static void bfs(int x, int y) {
+    static int bfs(int row, int col) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[] {x, y});
-        visited[x][y] = true;
-        int cnt = 1;
+        queue.offer(new int[] {row, col});
+        visited[row][col] = true;
+        int count = 1;
 
         while (!queue.isEmpty()) {
             int[] arr = queue.poll();
-            int nowX = arr[0];
-            int nowY = arr[1];
+            int nowY = arr[0];
+            int nowX = arr[1];
 
             for (int i = 0; i < 4; i++) {
-                int nextX = nowX + dx[i];
                 int nextY = nowY + dy[i];
+                int nextX = nowX + dx[i];
+                if (nextY < 0 || nextX < 0 || nextY >= N || nextX >= N) continue;
+                if (visited[nextY][nextX] || map[nextY][nextX] != 1)  continue;
 
-                if (nextX < 0 || nextY < 0 || nextX >= map.length || nextY >= map.length) continue;
-                if (visited[nextX][nextY] || map[nextX][nextY] == 0) continue;
-
-                queue.offer(new int[] {nextX, nextY});
-                visited[nextX][nextY] = true;
-                cnt++;
+                queue.offer(new int[] {nextY, nextX});
+                visited[nextY][nextX] = true;
+                count++;
             }
         }
 
-        result.add(cnt);
-        
+        return count;
     }
+
 
 }
