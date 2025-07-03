@@ -1,38 +1,53 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n];
-        
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        
-        List<Integer> lis = new ArrayList<>();
-        
-        for (int num : arr) {
-            int idx = binarySearch(lis, num);
-            if (idx < lis.size()) {
-                lis.set(idx, num);
+
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int idx = binarySearch(list, arr[i]);
+
+            if (idx < list.size()) {
+                list.set(idx, arr[i]);
             } else {
-                lis.add(num);
+                list.add(arr[i]);
             }
         }
-        
-        System.out.println(lis.size());
+
+
+        System.out.println(list.size());
+
+
     }
-    
-    public static int binarySearch(List<Integer> lis, int target) {
-        int left = 0, right = lis.size();
+
+    public static int binarySearch(List<Integer> list, int target) {
+        int left = 0;
+        int right = list.size();
+
         while (left < right) {
             int mid = (left + right) / 2;
-            if (lis.get(mid) >= target) {
+
+            if (list.get(mid) >= target) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
+
         }
         return left;
     }
