@@ -1,48 +1,52 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-class Main {
+public class Main {
+
     public static void main(String[] args) throws IOException {
-        // 6
-        // 10 20 10 30 20 50
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
         int[] arr = new int[n];
-        int[] dp = new int[n];
         int[] prev = new int[n];
+        List<Integer> list = new ArrayList<>();
+        List<Integer> indexList = new ArrayList<>();
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            dp[i] = 1;
             prev[i] = -1;
         }
 
-        int maxLength = 1;
-        int lastIndex = 0;
+        for (int i = 0; i < n; i++) {
+            int idx = binarySearch(list, arr[i]);
 
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {
-                    dp[i] = dp[j] + 1;
-                    prev[i] = j;
-                }
+            if (idx == list.size()) {
+                list.add(arr[i]);
+                indexList.add(i);
+            } else {
+                list.set(idx, arr[i]);
+                indexList.set(idx, i);
+            }
 
-                if (dp[i] > maxLength) {
-                    maxLength = dp[i];
-                    lastIndex = i;
-                }
+            if (idx > 0) {
+                prev[i] = indexList.get(idx - 1);
             }
         }
 
+
+        int lastIndex = indexList.get(indexList.size() - 1);
         Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < maxLength; i++) {
-            stack.push(arr[lastIndex]);
+        stack.push(arr[lastIndex]);
+        while (prev[lastIndex] != -1) {
             lastIndex = prev[lastIndex];
+            stack.push(arr[lastIndex]);
         }
 
         System.out.println(stack.size());
@@ -50,5 +54,24 @@ class Main {
             System.out.print(stack.pop() + " ");
         }
 
+
     }
+
+    static int binarySearch(List<Integer> list, int target) {
+        int left = 0;
+        int right = list.size();
+
+        while (left < right) {
+            int mid = (left + right) / 2;
+
+            if (list.get(mid) >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
 }
