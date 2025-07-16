@@ -5,54 +5,48 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+    static char[][] arr;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int row = Integer.parseInt(st.nextToken());
+        int col = Integer.parseInt(st.nextToken());
 
-		int row = Integer.parseInt(st.nextToken());
-		int col = Integer.parseInt(st.nextToken());
+        arr = new char[row][col];
+        for (int i = 0; i < row; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < col; j++) {
+                arr[i][j] = str.charAt(j);
+            }
+        }
 
-		int min = Integer.MAX_VALUE;
+        int result = Integer.MAX_VALUE;
+        for (int i = 0; i <= row - 8; i++) {
+            for (int j = 0; j <= col - 8; j++) {
+                result = Math.min(result, getCount(i, j));
+            }
+        }
 
-		String[][] map = new String[row][col];
+        System.out.println(result);
 
-		for (int i = 0; i < row; i++) {
-			String str = br.readLine();
-			for (int j = 0; j < col; j++) {
-				map[i][j] = str.charAt(j) + "";
-			}
-		}
+    }
 
-		for (int i = 0; i < row - 7; i++) {
-			for (int j = 0; j < col - 7; j++) {
-				min = Math.min(min, result(i, j, map));
-			}
-		}
+    public static int getCount(int row, int col) {
 
-		System.out.println(min);
+        int count = 0;
 
-	}
+        for (int i = row; i < row + 8; i++) {
+            char prev = i % 2 == 0 ? 'B' : 'W';
+            for (int j = col; j < col + 8; j++) {
+                if (arr[i][j] != prev) count++;
+                prev = prev == 'W' ? 'B' : 'W';
+            }
+        }
 
-	static int result(int i, int j, String[][] map) {
+        count = Math.min(count, 64 - count);
 
-		String color = "W";
-		int count = 0;
-
-		for (int row = i; row < i + 8; row++) {
-			for (int col = j; col < j + 8; col++) {
-
-				if (color.equals(map[row][col])) {
-					count++;
-				}
-
-				color = color.equals("W") ? "B" :"W";
-			}
-
-			color = color.equals("W") ? "B" :"W";
-		}
-
-		return Math.min(count, 64 - count);
-	}
+        return count;
+    }
 }
