@@ -2,41 +2,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class Main {
+public class Main {
 
-    static int N;
+    static int n;
     static boolean[] visited;
-    static int[] result;
+    static int[] arr;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
 
-        N = Integer.parseInt(br.readLine());
-        visited = new boolean[N + 1];
-        result = new int[N];
+        arr = new int[n + 1];
+        visited = new boolean[n + 1];
 
-        dfs(0);
+        bfs(1);
+
     }
 
-    static void dfs(int count) {
-
-        if (count == N) {
-            for (int i = 0; i < N; i++) {
-                System.out.print(result[i] + " ");
+    public static void bfs(int count) {
+        if (count == n + 1) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i <= n ; i++) {
+                sb.append(arr[i] + " ");
             }
-            System.out.println();
+            System.out.println(sb.toString());
             return;
         }
 
-        for (int i = 1; i <= N; i++) {
-            if(!visited[i]) {
-                visited[i] = true;
-                result[count] = i;
-                dfs(count + 1);
-                visited[i] = false;
-            }
+        for (int i = 1; i <= n; i++) {
+            if (visited[i]) continue;
+            visited[i] = true;
+            arr[count] = i;
+            bfs(count + 1);
+            visited[i] = false;
         }
-
     }
+
 }
