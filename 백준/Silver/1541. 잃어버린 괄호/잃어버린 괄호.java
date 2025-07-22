@@ -4,33 +4,28 @@ import java.io.InputStreamReader;
 
 public class Main {
 
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        String[] arr = br.readLine().split("-");
+        int result = 0;
 
-        String str = br.readLine();
+        for (int i = 0; i < arr.length; i++) {
+            String[] plus = arr[i].split("\\+");
 
-        String[] minus = str.split("-");
+            int sum = 0;
+            for (int j = 0; j < plus.length; j++) {
+                sum += Integer.parseInt(plus[j]);
+            }
 
-        int total = sum(minus[0]);
-
-        for (int i = 1; i < minus.length; i++) {
-            total -= sum(minus[i]);
+            result = i == 0 ? result + sum : result - sum;
         }
 
-        System.out.println(total);
+        System.out.println(result);
 
     }
 
-    public static int sum(String str) {
-        int total = 0;
-
-        String[] numbers = str.split("\\+");
-        for (String num : numbers) {
-            total += Integer.parseInt(num);
-        }
-
-        return total;
-    }
 
 }
