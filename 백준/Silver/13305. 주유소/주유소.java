@@ -26,15 +26,11 @@ public class Main {
             city[i] = Integer.parseInt(st.nextToken());
         }
 
-
-        int result = 0;
-        for (int i = n - 2; i >= 0; i--) {
-            int minCost = Integer.MAX_VALUE;
-            for (int j = 0; j <= i; j++) {
-                minCost = Math.min(minCost, city[j]);
-            }
-
-            result += minCost * cost[i];
+        long result = 0;
+        int minCost = Integer.MAX_VALUE;
+        for (int i = 0; i < n - 1; i++) {
+            if (city[i] < minCost) minCost = city[i];
+            result += (long) minCost * cost[i];
         }
 
         System.out.println(result);
