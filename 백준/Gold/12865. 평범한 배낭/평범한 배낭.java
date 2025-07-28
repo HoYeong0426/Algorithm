@@ -6,34 +6,31 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int max = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int maxWeight = Integer.parseInt(st.nextToken());
 
-        int[] weights = new int[N + 1];
-        int[] values = new int[N + 1];
+        int[] weight = new int[maxWeight + 1];
+        int[] values = new int[n + 1];
+        int[] dp = new int[maxWeight + 1];
 
-        for (int i = 1; i <= N; i++) {
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-
-            weights[i] = x;
-            values[i] = y;
+            weight[i] = Integer.parseInt(st.nextToken());
+            values[i] = Integer.parseInt(st.nextToken());
         }
 
-        int[] dp = new int[max + 1];
-
-        for (int i = 1; i <= N; i++) {
-            for (int j = max; j >= weights[i]; j--) {
-                dp[j] = Math.max(dp[j], dp[j - weights[i]] + values[i]);
+        for (int i = 0; i < n; i++) {
+            for (int j = maxWeight; j >= weight[i]; j--) {
+                dp[j] = Math.max(dp[j], dp[j - weight[i]] + values[i]);
             }
         }
 
-        System.out.println(dp[max]);
-
+        System.out.println(dp[maxWeight]);
     }
+
+
 }
