@@ -1,50 +1,63 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int N, max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-    static int[] numbers, operators = new int[4];
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        numbers = new int[N];
+	static int n;
+	static int[] number, operator;
+	static int min = Integer.MAX_VALUE;
+	static int max = Integer.MIN_VALUE;
 
-        for (int i = 0; i < N; i++) {
-            numbers[i] = sc.nextInt();
-        }
+	public static void main(String[] args) throws IOException {
 
-        for (int i = 0; i < 4; i++) {
-            operators[i] = sc.nextInt();
-        }
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        dfs(1, numbers[0]);
-        System.out.println(max);
-        System.out.println(min);
-    }
+		n = Integer.parseInt(br.readLine());
+		number = new int[n];
+		operator = new int[4];
 
-    static void dfs(int idx, int result) {
-        if (idx == N) {
-            max = Math.max(max, result);
-            min = Math.min(min, result);
-            return;
-        }
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < n; i++) {
+			number[i] = Integer.parseInt(st.nextToken());
+		}
 
-        for (int i = 0; i < 4; i++) {
-            if (operators[i] > 0) {
-                operators[i]--;
-                dfs(idx + 1, calculate(result, numbers[idx], i));
-                operators[i]++;
-            }
-        }
-    }
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < 4; i++) {
+			operator[i] = Integer.parseInt(st.nextToken());
+		}
 
-    static int calculate(int a, int b, int op) {
-        switch (op) {
-            case 0: return a + b;
-            case 1: return a - b;
-            case 2: return a * b;
-            case 3: return a < 0 ? -(-a / b) : a / b;
-        }
-        return 0;
-    }
+		dfs(1, number[0]);
+
+		System.out.println(max);
+		System.out.println(min);
+
+	}
+
+
+	public static void dfs(int idx, int sum) {
+
+		if (idx == n) {
+			max = Math.max(max, sum);
+			min = Math.min(min, sum);
+			return;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (operator[i] == 0) continue;
+
+			int now = number[idx];
+			operator[i] -= 1;
+			switch (i) {
+				case 0: dfs(idx + 1, sum + now); break;
+				case 1: dfs(idx + 1, sum - now); break;
+				case 2: dfs(idx + 1, sum * now); break;
+				default: dfs(idx + 1, sum / now); break;
+			}
+			operator[i] += 1;
+		}
+
+	}
+
 }
