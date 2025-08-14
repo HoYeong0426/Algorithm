@@ -8,34 +8,33 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
+
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[N];
+        List<Integer> list = new ArrayList<>();
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            int idx = lowerBound(list, arr[i]);
 
-        for (int i = 0; i < n; i++) {
-            int idx = binarySearch(list, arr[i]);
-
-            if (idx < list.size()) {
-                list.set(idx, arr[i]);
-            } else {
+            if (idx >= list.size()) {
                 list.add(arr[i]);
+            } else {
+                list.set(idx, arr[i]);
             }
         }
 
-
         System.out.println(list.size());
-
 
     }
 
-    public static int binarySearch(List<Integer> list, int target) {
+    static int lowerBound(List<Integer> list, int target) {
         int left = 0;
         int right = list.size();
 
@@ -49,6 +48,8 @@ public class Main {
             }
 
         }
+
         return left;
     }
+
 }
