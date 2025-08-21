@@ -20,23 +20,18 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            int now = arr[i];
 
-            if (now >= num) {
-                while (now >= num) {
-                    stack.push(num++);
-                    sb.append("+").append("\n");
-                }
-                stack.pop();
-                sb.append("-").append("\n");
+            while (num <= arr[i]) {
+                stack.push(num++);
+                sb.append("+\n");
+            }
+
+            if (stack.pop() == arr[i]) {
+                sb.append("-\n");
             } else {
-                int pop = stack.pop();
-                if (pop == now) {
-                    sb.append("-").append("\n");
-                } else {
-                    System.out.println("NO");
-                    return;
-                }
+                sb = new StringBuilder();
+                sb.append("NO");
+                break;
             }
 
         }
