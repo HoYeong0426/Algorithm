@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,22 +21,23 @@ public class Main {
 
         int left = 0;
         int right = arr.length - 1;
-        int result = 0;
+        int count = 0;
         while (left < right) {
             int sum = arr[left] + arr[right];
-
             if (sum == M) {
-                result++;
+                count++;
                 left++;
                 right--;
-            } else if (sum < M) {
-                left++;
+            } else if (sum > M) {
+                right--;
             } else {
-                right--;
+                left++;
             }
+
         }
 
-        System.out.println(result);
+        System.out.println(count);
+
 
     }
 }
