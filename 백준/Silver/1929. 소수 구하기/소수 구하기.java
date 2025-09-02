@@ -14,24 +14,33 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
+
         StringBuilder sb = new StringBuilder();
+        boolean[] prime = getPrimes(M);
         for (int i = N; i <= M; i++) {
-            if (isPrime(i)) sb.append(i + "\n");
+            if (prime[i]) continue;
+            sb.append(i + "\n");
         }
 
         System.out.println(sb.toString());
 
     }
 
-    static boolean isPrime(int target) {
-        if (target < 2) return false;
+    static boolean[] getPrimes(int target) {
+        boolean[] prime = new boolean[target + 1];
+
+        prime[0] = true;
+        prime[1] = true;
 
         for (int i = 2; i <= Math.sqrt(target); i++) {
-            if (target % i == 0) return false;
+            if (prime[i]) continue;
+            for (int j = i * i; j <= target; j += i) {
+                prime[j] = true;
+            }
         }
 
+        return prime;
 
-        return true;
     }
 
 }
