@@ -1,15 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -17,34 +17,40 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        List<Integer>[] graph = new ArrayList[N + 1];
+        List<Integer>[] list = new ArrayList[N + 1];
         int[] indegree = new int[N + 1];
         for (int i = 1; i <= N; i++) {
-            graph[i] = new ArrayList<>();
+            list[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
+
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            graph[a].add(b);
+            list[a].add(b);
             indegree[b]++;
         }
 
-        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new ArrayDeque();
         for (int i = 1; i <= N; i++) {
-            if (indegree[i] == 0) queue.offer(i);
+            if (indegree[i] == 0) {
+                queue.offer(i);
+            }
         }
 
         StringBuilder sb = new StringBuilder();
         while (!queue.isEmpty()) {
             int now = queue.poll();
             sb.append(now + " ");
-            
-            for (int n : graph[now]) {
-                indegree[n]--;
-                if(indegree[n] == 0) queue.offer(n);
+
+            for (int next : list[now]) {
+                indegree[next]--;
+                if (indegree[next] == 0) {
+                    queue.offer(next);
+                }
+
             }
 
         }
@@ -53,6 +59,7 @@ public class Main {
 
 
     }
+
 
 
 }
