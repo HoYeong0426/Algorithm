@@ -25,12 +25,12 @@ public class Main {
         int left = 0, right = 0, sum = 0, count = 0;
         while (true) {
 
-            if (sum >= M) {
+            if (sum <= M) {
                 if (sum == M) count++;
-                sum -= arr[left++];   
-            } else {
                 if (right == N) break;
                 sum += arr[right++];
+            } else {
+                sum -= arr[left++];   
             }
         }
 
