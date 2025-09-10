@@ -1,35 +1,57 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+    static int N;
+    static int[] arr;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
 
-		int N = Integer.parseInt(br.readLine());
-		Set<Integer> set = new HashSet<>();
-		
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < N; i++) {
-			set.add(Integer.parseInt(st.nextToken()));
-		}
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		int M = Integer.parseInt(br.readLine());
-		st = new StringTokenizer(br.readLine());
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < M; i++) {
-			sb.append(set.contains(Integer.parseInt(st.nextToken())) ? 1 : 0).append("\n");
-		}
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N];
 
-		System.out.println(sb.toString());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
 
+        Arrays.sort(arr);
 
-	}
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < M; i++) {
+            sb.append(isCorrect(Integer.parseInt(st.nextToken())) ? 1 : 0).append("\n");
+        }
 
+        System.out.println(sb.toString());
+
+    }
+
+    public static boolean isCorrect(int target) {
+        int left = 0;
+        int right = N - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2 ;
+
+            if (arr[mid] == target) {
+                return true;
+            } else if (arr[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+
+        }
+
+        return false;
+    }
 
 }
