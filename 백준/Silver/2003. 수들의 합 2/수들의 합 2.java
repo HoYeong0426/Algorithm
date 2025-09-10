@@ -5,9 +5,11 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
@@ -19,14 +21,13 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int left = 0;
-        int right = 0;
-        int sum = 0;
-        int count = 0;
+
+        int left = 0, right = 0, sum = 0, count = 0;
         while (true) {
-            if (sum >= M ) {
+
+            if (sum >= M) {
                 if (sum == M) count++;
-                sum -= arr[left++];
+                sum -= arr[left++];   
             } else {
                 if (right == N) break;
                 sum += arr[right++];
@@ -34,6 +35,7 @@ public class Main {
         }
 
         System.out.println(count);
+
     }
 
 }
