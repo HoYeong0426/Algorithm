@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static char[][] arr;
+    static char[][] board;
 
     public static void main(String[] args) throws IOException {
 
@@ -14,11 +14,12 @@ public class Main {
         int row = Integer.parseInt(st.nextToken());
         int col = Integer.parseInt(st.nextToken());
 
-        arr = new char[row][col];
+        board = new char[row][col];
+
         for (int i = 0; i < row; i++) {
             String str = br.readLine();
             for (int j = 0; j < col; j++) {
-                arr[i][j] = str.charAt(j);
+                board[i][j] = str.charAt(j);
             }
         }
 
@@ -33,20 +34,18 @@ public class Main {
 
     }
 
-    public static int getCount(int row, int col) {
-
+    static int getCount(int row, int col) {
         int count = 0;
 
         for (int i = row; i < row + 8; i++) {
-            char prev = i % 2 == 0 ? 'B' : 'W';
+            char prev = i % 2 == 0 ? 'W' : 'B';
             for (int j = col; j < col + 8; j++) {
-                if (arr[i][j] != prev) count++;
+                if (prev != board[i][j])
+                    count++;
                 prev = prev == 'W' ? 'B' : 'W';
             }
         }
 
-        count = Math.min(count, 64 - count);
-
-        return count;
+        return Math.min(count, 64 - count);
     }
 }
