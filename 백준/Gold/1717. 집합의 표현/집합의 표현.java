@@ -3,36 +3,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
-
+class Main {
     static int[] parent;
-
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        parent = new int[N + 1];
-        for (int i = 0; i <= N; i++) {
+        parent = new int[n + 1];
+
+        for (int i = 1; i <= n; i++) {
             parent[i] = i;
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
 
-            int flag = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-            if (flag == 0) {
-                union(a, b);
+            if (a == 0) {
+                union(b, c);
             } else {
-                sb.append(find(a) == find(b) ? "YES" : "NO").append("\n");
+                sb.append(find(b) == find(c) ? "YES" : "NO").append("\n");
             }
 
         }
@@ -45,7 +43,7 @@ public class Main {
         int rootA = find(a);
         int rootB = find(b);
 
-        parent[rootA] = rootB;
+        parent[rootB] = rootA;
     }
 
     static int find(int target) {
