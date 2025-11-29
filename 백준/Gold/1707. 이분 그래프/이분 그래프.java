@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+class Main {
 
     static List<Integer>[] graph;
     static int[] visited;
@@ -18,18 +18,19 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         StringBuilder sb = new StringBuilder();
-        for (int k = 0; k < N; k++) {
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int V = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
 
             graph = new ArrayList[V + 1];
             visited = new int[V + 1];
-            for (int i = 1; i <= V; i++) {
-                graph[i] = new ArrayList<>();
+
+            for (int j = 1; j <= V; j++) {
+                graph[j] = new ArrayList<>();
             }
 
-            for (int i = 0; i < E; i++) {
+            for (int j = 0; j < E; j++) {
                 st = new StringTokenizer(br.readLine());
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
@@ -39,12 +40,12 @@ public class Main {
             }
 
             boolean result = true;
-            for (int i = 1; i <= V; i++) {
-                if (visited[i] == 0) {
-                    if(!isPossible(i)) {
-                        result = false;
-                        break;
-                    }
+            for (int j = 1; j <= V; j++) {
+                if (visited[j] != 0)
+                    continue;
+                if (!isPossible(j)) {
+                    result = false;
+                    break;
                 }
             }
 
@@ -53,29 +54,25 @@ public class Main {
         }
 
         System.out.println(sb.toString());
-
     }
 
-    static boolean isPossible(int target) {
+    static boolean isPossible(int start) {
         Queue<Integer> queue = new ArrayDeque<>();
-        queue.offer(target);
-        visited[target] = 1;
+        queue.offer(start);
+        visited[start] = 1;
 
         while (!queue.isEmpty()) {
             int now = queue.poll();
 
             for (int next : graph[now]) {
-                
                 if (visited[next] == 0) {
-                    queue.offer(next);
                     visited[next] = -visited[now];
-                } else if (visited[next] == visited[now]) {
+                    queue.offer(next);
+                } else if (visited[next] == visited[now])
                     return false;
-                }
             }
         }
+
         return true;
     }
-
-
 }
