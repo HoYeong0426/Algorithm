@@ -12,15 +12,10 @@ class Solution {
             n -= enemy[i];
             
             if (n < 0) {
-                if (k > 0) {
-                    k--;
-                    n += pq.poll();
-                } else {
-                    break;
-                }
+                if (k < 1) break;
+                k--;
+                n += pq.poll();
             }
-            
-            
             
             answer++;
         }
